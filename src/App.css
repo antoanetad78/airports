@@ -1,106 +1,19 @@
-canvas {
+border {
   border: 1px solid grey
 }
 
 svg {
-  width: 100%
+  width: 70%;
+  border: 1px solid grey;
+  margin: 20px 50px 20px 50px;
 }
 
-.st0 {
-  fill: #FFFFFF;
-  stroke: #000000;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
+.form {
+  width: 70%;
+  margin: 20px 50px 20px 50px;
 }
 
-.st1 {
-  fill: none;
-  stroke: #000000;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-}
-
-.st2 {
-  fill: none;
-  stroke: #000000;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-  stroke-dasharray: 12.181, 12.181;
-}
-
-.st3 {
-  fill: none;
-  stroke: #000000;
-  stroke-width: 3;
-  stroke-miterlimit: 10;
-}
-
-.st4 {
-  fill: none;
-  stroke: #58595B;
-  stroke-width: 5;
-  stroke-miterlimit: 10;
-}
-
-.st6 {
-  font-size: 21px;
-}
-
-.st7 {
-  font-size: 36px;
-}
-
-.st8 {
-  fill: #BE1E2D;
-}
-
-.st9 {
-  fill: #BB56A0;
-  stroke: #BB56A0;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-}
-
-.st10 {
-  fill: none;
-  stroke: #BB56A0;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-}
-
-.st11 {
-  fill: none;
-  stroke: #3952A3;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-}
-
-.st12 {
-  fill: #BB56A0;
-}
-
-.st13 {
-  font-size: 24px;
-}
-
-.st14 {
-  fill: #3952A3;
-}
-
-.st15 {
-  font-family: OpenSans-bold;
-}
-
-.st16 {
-  font-size: 48px;
-}
-
-.st17 {
-  opacity: 0.2;
-  fill: #BB56A0;
-}
-
-.st18 {
-  opacity: 0.2;
-  fill: #3952A3;
+textarea {
+  width: 100%;
+  resize: none;
 }

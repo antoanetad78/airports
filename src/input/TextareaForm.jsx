@@ -1,88 +1,66 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadRunwayList } from "../actions/runways";
+import { getAirportData } from "../actions/airport";
+import { pairs } from "../helpers/pairs";
+import { TEXT_DEFAULT } from "../constants";
 
-function TextareaForm({ loadRunwayList }) {
+function TextareaForm({ loadRunwayList, getAirportData }) {
   const [data, setData] = useState([]);
+  const [airportData, setAirportData] = useState({});
+  const [textareaValue, setTextareaValue] = useState(TEXT_DEFAULT);
   useEffect(() => {
     loadRunwayList(data);
-  }, [data, loadRunwayList]);
-
+    getAirportData(airportData);
+  }, [data, loadRunwayList, airportData, getAirportData]);
+  useEffect(() => {
+    getData(TEXT_DEFAULT);
+    airportDataAll(TEXT_DEFAULT);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const getData = textareaValue => {
     const temp = JSON.parse(textareaValue);
     console.log(temp);
 
     const extractTemp = Object.values(temp.RWY);
-    const smallLabels = extractTemp.filter(rwy => {
-      if (Number(rwy.DESIGNATOR.slice(0, rwy.DESIGNATOR.length - 1)) < 19) {
-        console.log(
-          Number(rwy.DESIGNATOR.slice(0, rwy.DESIGNATOR.length - 1)),
-          "designator"
-        );
-
-        return rwy;
-      }
+    const listToPair = extractTemp.filter(rwy => {
+      return rwy.FULLORINTERSECTION === "Full runway" ? rwy : null;
     });
-    console.log(smallLabels, "low temporary");
+    const pairsList = pairs(listToPair);
 
-    // const highTemp = extractTemp.filter(rwy => {
-    //   if (Number(rwy.MAGNETICHEADING) > 180) {
-    //     return rwy;
-    //   }
-    // });
-    // console.log(highTemp, "high temporary");
-
-    // const extractRWY = Object.values(temp.RWY).filter(rwy => {
-    //   if (rwy.NAME.includes("FULL")) {
-    //     return rwy;
-    //   }
-    // });
-    // console.log(extractRWY);
-    const extractCoord = coordinate => {
-      const degrees = coordinate / 10000;
-      const minutes = (coordinate % 10000) / 100;
-      const seconds = (coordinate % 10000) % 100;
-
-      const converted =
-        degrees * 10000 + (minutes / 60) * 100 + seconds / (60 * 60);
-      return converted;
-    };
-    const extractWRYvars = smallLabels.map(rwy => {
-      return {
-        name1: rwy.RWYNO,
-        wid: rwy.WIDTH,
-        len: rwy.ASDA,
-        angle: Number(rwy.HDG),
-        x: extractCoord(
-          Number(
-            rwy.THRESHOLDLATITUDE.slice(0, rwy.THRESHOLDLATITUDE.length - 3)
-          )
-        ),
-        y: extractCoord(
-          Number(
-            rwy.THRESHOLDLONGITUDE.slice(0, rwy.THRESHOLDLONGITUDE.length - 3)
-          )
-        )
-      };
-    });
-    setData([...data, ...extractWRYvars]);
+    setData([...data, ...pairsList]);
   };
-  console.log(data, "extraxted data");
-
+  const airportDataAll = textareaValue => {
+    const airportDataAll = JSON.parse(textareaValue);
+    const airport = {
+      NAME: airportDataAll.NAME,
+      MAGNETICVARIATION: airportDataAll.MAGNETICVARIATION
+    };
+    setAirportData({ ...airportData, ...airport });
+  };
   return (
     <Fragment>
-      <form>
-        <textarea
-          onChange={e => {
-            getData(e.target.value);
-          }}
-        ></textarea>
-      </form>
+      <div className="form">
+        <p>
+          To change the image delete the existing data and paste a new set. The
+          form expects the same structure.
+        </p>
+        <form>
+          <textarea
+            value={textareaValue}
+            onChange={e => {
+              getData(e.target.value);
+              airportDataAll(e.target.value);
+            }}
+          ></textarea>
+        </form>
+        <button onClick={() => setTextareaValue("")}>Clear form</button>
+      </div>
     </Fragment>
   );
 }
 
 export default connect(
   null,
-  { loadRunwayList }
+  { loadRunwayList, getAirportData }
 )(TextareaForm);
