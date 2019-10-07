@@ -1,6 +1,7 @@
 const coordDegreeToRadian = degree => {
   return degree * (Math.PI / 180);
 };
+//get the decimal degree from the geo coordinate. Fised to 8 decmial positions.
 const getCoordinates = coordinate => {
   const coordValue = Number(coordinate.slice(0, coordinate.length - 3));
   const degrees = Math.floor(coordValue / 10000);

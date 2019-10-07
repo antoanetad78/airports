@@ -19,16 +19,15 @@ function TextareaForm({ loadRunwayList, getAirportData }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getData = textareaValue => {
-    const temp = JSON.parse(textareaValue);
-    console.log(temp);
-
-    const extractTemp = Object.values(temp.RWY);
-    const listToPair = extractTemp.filter(rwy => {
-      return rwy.FULLORINTERSECTION === "Full runway" ? rwy : null;
-    });
-    const pairsList = pairs(listToPair);
-
-    setData([...data, ...pairsList]);
+    if (textareaValue.length > 0) {
+      const temp = JSON.parse(textareaValue);
+      const extractTemp = Object.values(temp.RWY);
+      const listToPair = extractTemp.filter(rwy => {
+        return rwy.FULLORINTERSECTION === "Full runway" ? rwy : null;
+      });
+      const pairsList = pairs(listToPair);
+      setData([...data, ...pairsList]);
+    }
   };
   const airportDataAll = textareaValue => {
     const airportDataAll = JSON.parse(textareaValue);
@@ -49,12 +48,21 @@ function TextareaForm({ loadRunwayList, getAirportData }) {
           <textarea
             value={textareaValue}
             onChange={e => {
+              setTextareaValue(e.target.value);
               getData(e.target.value);
               airportDataAll(e.target.value);
             }}
           ></textarea>
         </form>
-        <button onClick={() => setTextareaValue("")}>Clear form</button>
+        <button
+          onClick={() => {
+            setTextareaValue("");
+            setData([]);
+            setAirportData({});
+          }}
+        >
+          Clear form
+        </button>
       </div>
     </Fragment>
   );

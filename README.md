@@ -1,4 +1,56 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+It should create s simplified map, representing an airport runways, using certain format of data.
+
+## To view:
+
+Locate build/index.html and double click. It should show in the browser with the Chicago airport map as initial.
+
+## To run in production :
+
+- download the repo
+- yarn install
+- yarn start
+
+It does:
+
+1. Upon changing the data in the texteare field, attemts to read the data and use it to buid a map. If the provided data has the same properties as the sample it should render a map, similar to the initial one.
+
+### General:
+
+The app uses Redux to keep the global state separate and easily accessible by every component that needs to access it.
+
+### Components:
+
+## App :
+
+The main component. It renders two child components - TextareaForm and CanvasContainer
+
+## TextareaForm:
+
+- Is connected to the Redux store.
+- Is responsible for rendering the textarea field with its initial value and reading the data from it. Clearing of the <textarea> does not remove the currently displayed map, it only provides an easier way to paste new set of data or change some value in the existing one.
+- Works with a single set of data.
+- Extracts the RWY, NAME and MAGNETICVARIATION properties from the airport object and passes them to the respective functions to be dispathed to the store.
+  -- getData - takes the textarea value, extracts the RWY property only, then filters to leave only the full runways. Passes the new list to pairs()
+  -- pairs - takes the list of full runways and redices it to a list of pairs of runways. It matches the names (by number and letter).
+  -- loadRunwayList: the action that dispatches the list of runway pairs to the Redux store. It is placed in an Effect hook and runs every time the data in the textarea field changes.
+  -- airportDataAll - extracts the NAME and MAGNETICVARIATION properties from the textarea value. The NAME is not used, MAGNETICVARIATION helps to adjust the drawing's angle. The returned value is passed to an action getAirportData:
+  -- getAirportData - the action that sends the airport object {NAME, MAGNETICVARIATION} to the Redux store.
+
+## CanvasContainer:
+
+- Connected to the Store, takes the list of runways and the airport.MAGNETICVARIATION properties. It uses a set of helper functions to calculate and add x,y coordinates to each runway object and the angle correction for the drawing.
+- Renders the Drawing component and passes it the runways list and the angle of the drawing as props.
+- The x,y coordinates are calculated as the distance between a reference point and the beginning of each runway.
+- The reference point's coordinates are calculated by adding 2 geographical seconds to the western-most and northern-most runway coordinate.
+
+## Drawing :
+
+- A stateless components, takes a list of runways and an number as angle correction.
+- Creates one <svg> element and fills it with <rect> and <text> elements. Proportions are kept on resize.
+- Maps through the list and for each element renders a rectangle with width = runway's length, height = runway's width, both divided by 10 for saving space, rotated using the angle of the runway, corrected with the correction angle and takes into account the svg rotation directions.
+- x,y coordinates for the <rect> elements are runway's x,y coordinates\*100. This is enough space for this width and height but will require adjustment if the <rect>s should be rendered bigger.
+- Pairs of names of the runways are displayed at the beginning of each <rect>
 
 ## Available Scripts
 
