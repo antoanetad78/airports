@@ -28,7 +28,7 @@ The main component. It renders two child components - TextareaForm and CanvasCon
 ## TextareaForm:
 
 - Is connected to the Redux store.
-- Is responsible for rendering the textarea field with its initial value and reading the data from it. Clearing of the <textarea> does not remove the currently displayed map, it only provides an easier way to paste new set of data or change some value in the existing one.
+- Is responsible for rendering the textarea field with its initial value and reading the data from it. Clearing of the <textarea> removes the currently displayed map and, provides an easy way to paste new set of data or change some value in the existing one.
 - Works with a single set of data.
 - Extracts the RWY, NAME and MAGNETICVARIATION properties from the airport object and passes them to the respective functions to be dispathed to the store.
   -- getData - takes the textarea value, extracts the RWY property only, then filters to leave only the full runways. Passes the new list to pairs()

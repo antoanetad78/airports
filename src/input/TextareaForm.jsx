@@ -26,7 +26,7 @@ function TextareaForm({ loadRunwayList, getAirportData }) {
         return rwy.FULLORINTERSECTION === "Full runway" ? rwy : null;
       });
       const pairsList = pairs(listToPair);
-      setData([...data, ...pairsList]);
+      setData([...pairsList]);
     }
   };
   const airportDataAll = textareaValue => {
@@ -35,7 +35,7 @@ function TextareaForm({ loadRunwayList, getAirportData }) {
       NAME: airportDataAll.NAME,
       MAGNETICVARIATION: airportDataAll.MAGNETICVARIATION
     };
-    setAirportData({ ...airportData, ...airport });
+    setAirportData({ ...airport });
   };
   return (
     <Fragment>
